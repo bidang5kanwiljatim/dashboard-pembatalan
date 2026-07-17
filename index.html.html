@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register Usulan Pembatalan — Kanwil BPN Jawa Timur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root{
+    --ink:#16233A;
+    --ink-soft:#3C4C64;
+    --paper:#F6F2E7;
+    --paper-deep:#EEE6D2;
+    --card:#FCFAF4;
+    --rule:#D9CFB0;
+    --brass:#A9822E;
+    --brass-deep:#7C5E1F;
+    --selesai:#2F6844;    --selesai-bg:#E1EEE4;
+    --proses:#B7791F;     --proses-bg:#FBF0DA;
+    --belum:#5B6472;      --belum-bg:#E9E7E0;
+    --lainnya:#A23B3B;    --lainnya-bg:#F5E2E0;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.5;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+  a{color:inherit;}
+
+  /* ---------- texture ---------- */
+  .paper-texture{
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(22,35,58,0.045) 1px, transparent 0);
+    background-size:14px 14px;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    position:relative;
+    padding:56px 0 64px;
+    border-bottom:1px solid var(--rule);
+    overflow:hidden;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--brass-deep);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px;height:1px;background:var(--brass);
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(34px, 5vw, 58px);
+    line-height:1.05;
+    margin:0 0 18px;
+    max-width:15ch;
+    letter-spacing:-0.01em;
+  }
+  .lede{
+    font-size:16px;
+    color:var(--ink-soft);
+    max-width:56ch;
+    margin:0 0 6px;
+  }
+  .lede strong{color:var(--ink);}
+  .meta-line{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-top:22px;
+    display:flex;
+    gap:28px;
+    flex-wrap:wrap;
+  }
+  .meta-line span b{color:var(--ink);font-weight:600;}
+
+  /* signature stamp */
+  .stamp{
+    position:absolute;
+    top:48px; right:28px;
+    width:148px;height:148px;
+    border-radius:50%;
+    border:2px solid var(--brass);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transform:rotate(-9deg);
+    color:var(--brass-deep);
+    text-align:center;
+    background:rgba(169,130,46,0.05);
+  }
+  .stamp::before{
+    content:"";
+    position:absolute;
+    inset:8px;
+    border:1px dashed var(--brass);
+    border-radius:50%;
+  }
+  .stamp .stamp-inner{
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .stamp .pct{
+    font-size:26px;
+    font-weight:600;
+    display:block;
+    line-height:1;
+  }
+  .stamp .lbl{
+    font-size:9px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    display:block;
+    margin-top:5px;
+  }
+  @media (max-width:720px){
+    .stamp{position:static;transform:rotate(-4deg);margin-top:24px;}
+  }
+
+  /* ---------- stat strip ---------- */
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--rule);
+    border:1px solid var(--rule);
+    margin-top:-1px;
+  }
+  .stat{
+    background:var(--card);
+    padding:22px 22px 20px;
+    border-top:3px solid var(--ink);
+  }
+  .stat.selesai{border-top-color:var(--selesai);}
+  .stat.proses{border-top-color:var(--proses);}
+  .stat.belum{border-top-color:var(--belum);}
+  .stat .num{
+    font-family:'Fraunces', serif;
+    font-size:38px;
+    font-weight:600;
+    line-height:1;
+  }
+  .stat .cap{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--ink-soft);
+    margin-top:8px;
+  }
+  @media (max-width:720px){ .stats{grid-template-columns:repeat(2,1fr);} }
+
+  /* ---------- sections ---------- */
+  section{padding:64px 0;}
+  section + section{border-top:1px solid var(--rule);}
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:30px;
+    flex-wrap:wrap;
+  }
+  .section-head h2{
+    font-family:'Fraunces', serif;
+    font-size:28px;
+    font-weight:600;
+    margin:0;
+  }
+  .section-head .idx{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--brass-deep);
+    letter-spacing:.1em;
+  }
+  .section-note{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    max-width:60ch;
+    margin:-18px 0 30px;
+  }
+
+  /* ---------- charts grid ---------- */
+  .chart-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+  }
+  .chart-card{
+    background:var(--card);
+    border:1px solid var(--rule);
+    padding:20px 20px 8px;
+  }
+  .chart-card h3{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:13.5px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin:0 0 4px;
+    color:var(--ink-soft);
+  }
+  .chart-card .chart-box{
+    position:relative;
+    height:260px;
+    margin-top:10px;
+  }
+  @media (max-width:860px){ .chart-grid{grid-template-columns:1fr;} }
+
+  /* ---------- table controls ---------- */
+  .controls{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    align-items:center;
+    margin-bottom:20px;
+  }
+  .search-box{
+    flex:1 1 240px;
+    position:relative;
+  }
+  .search-box input{
+    width:100%;
+    padding:10px 14px 10px 34px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    border:1px solid var(--rule);
+    background:var(--card);
+    color:var(--ink);
+    outline:none;
+  }
+  .search-box input:focus{border-color:var(--brass);}
+  .search-box::before{
+    content:"⌕";
+    position:absolute;
+    left:12px; top:50%;
+    transform:translateY(-50%);
+    color:var(--ink-soft);
+    font-size:15px;
+  }
+  select{
+    padding:10px 12px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    border:1px solid var(--rule);
+    background:var(--card);
+    color:var(--ink);
+    outline:none;
+  }
+  .pills{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+  .pill{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    padding:8px 13px;
+    border:1px solid var(--rule);
+    background:var(--card);
+    cursor:pointer;
+    color:var(--ink-soft);
+    user-select:none;
+    transition:all .15s ease;
+  }
+  .pill:hover{border-color:var(--brass);}
+  .pill.active{
+    background:var(--ink);
+    border-color:var(--ink);
+    color:var(--paper);
+  }
+  .result-count{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-bottom:14px;
+  }
+  .result-count b{color:var(--ink);}
+
+  /* ---------- table ---------- */
+  .table-wrap{
+    border:1px solid var(--rule);
+    background:var(--card);
+    overflow-x:auto;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+    min-width:760px;
+  }
+  thead th{
+    position:sticky; top:0;
+    background:var(--ink);
+    color:var(--paper);
+    text-align:left;
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:500;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    padding:12px 14px;
+    white-space:nowrap;
+  }
+  tbody tr{
+    border-bottom:1px solid var(--rule);
+    cursor:pointer;
+  }
+  tbody tr:hover{background:var(--paper-deep);}
+  tbody tr.open{background:var(--paper-deep);}
+  td{padding:11px 14px;vertical-align:top;}
+  td.no{font-family:'IBM Plex Mono', monospace;color:var(--ink-soft);width:44px;}
+  td.tahun{font-family:'IBM Plex Mono', monospace;width:56px;}
+  td.obyek{max-width:340px;}
+  .badge{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    padding:4px 9px;
+    border-radius:2px;
+    white-space:nowrap;
+  }
+  .badge.Selesai{background:var(--selesai-bg);color:var(--selesai);}
+  .badge.Proses{background:var(--proses-bg);color:var(--proses);}
+  .badge.Belum-Ada-Keterangan{background:var(--belum-bg);color:var(--belum);}
+  .badge.Lainnya{background:var(--lainnya-bg);color:var(--lainnya);}
+
+  tr.detail-row td{
+    background:var(--paper);
+    padding:16px 20px 22px 20px;
+    font-size:13px;
+  }
+  .detail-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(180px,1fr));
+    gap:14px 22px;
+  }
+  .detail-grid div .k{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--brass-deep);
+    margin-bottom:3px;
+  }
+  .detail-grid div .v{color:var(--ink);}
+
+  .empty-state{
+    padding:48px 20px;
+    text-align:center;
+    color:var(--ink-soft);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+  }
+
+  footer{
+    padding:30px 0 50px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--ink-soft);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  ::selection{background:var(--brass);color:#fff;}
+</style>
+</head>
+<body class="paper-texture">
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Bidang Pengendalian &amp; Penanganan Sengketa</div>
+    <h1>Register Usulan Pembatalan Hak Atas Tanah</h1>
+    <p class="lede">Rekapitulasi berkas usulan pembatalan yang ditangani <strong>Kanwil BPN Provinsi Jawa Timur</strong>, disusun dari register kerja tahun 2015–2026. Data telah dibersihkan dari entri ganda.</p>
+    <div class="meta-line">
+      <span>Sumber: <b>REGISTER_REGISTER_PEMBATALAN.xlsx</b></span>
+      <span>Baris unik: <b id="meta-total">–</b></span>
+      <span>Rentang tahun: <b id="meta-years">–</b></span>
+    </div>
+    <div class="stamp">
+      <div class="stamp-inner">
+        <span class="pct" id="stamp-pct">–%</span>
+        <span class="lbl">Selesai</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="stats" id="stat-strip"></div>
+</div>
+
+<section id="grafik">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Ringkasan Visual</h2>
+      <span class="idx">01 — GRAFIK</span>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>Proporsi Status Berkas</h3>
+        <div class="chart-box"><canvas id="chartStatus"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Berkas per Tahun Masuk</h3>
+        <div class="chart-box"><canvas id="chartTahun"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Top 10 Kantor Pertanahan</h3>
+        <div class="chart-box"><canvas id="chartKantor"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Beban Berkas per Pengolah</h3>
+        <div class="chart-box"><canvas id="chartPengolah"></canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="daftar">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Daftar Berkas</h2>
+      <span class="idx">02 — REGISTER</span>
+    </div>
+    <p class="section-note">Klik satu baris untuk membuka rincian dasar tindak lanjut, progress terkini, keterangan, dan nomor SK.</p>
+
+    <div class="controls">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Cari obyek perkara, kantor, atau pengolah…">
+      </div>
+      <select id="yearFilter"><option value="">Semua tahun</option></select>
+      <div class="pills" id="statusPills"></div>
+    </div>
+
+    <div class="result-count">Menampilkan <b id="resultCount">0</b> dari <b id="totalCount">0</b> berkas</div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Obyek Perkara</th>
+            <th>Tahun</th>
+            <th>Kantor Pertanahan</th>
+            <th>Pengolah</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      <div class="empty-state" id="emptyState" style="display:none;">Tidak ada berkas yang cocok dengan pencarian/filter.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" style="display:flex;justify-content:space-between;width:100%;flex-wrap:wrap;gap:8px;">
+    <span>Kanwil BPN Provinsi Jawa Timur · Bidang Pengendalian &amp; Penanganan Sengketa</span>
+    <span>Dibuat otomatis dari data register kerja</span>
+  </div>
+</footer>
+
+<script>
+const DATA = [{"No": 1, "Obyek Perkara": "HM No. 76, 1399, 1400/Kel. Gading/Rangkah an. Hanggar Surya", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kota Surabaya", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 2, "Obyek Perkara": "HM No. 579/Karangbendo an. Saemah", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Banyuwangi", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 3, "Obyek Perkara": "HM No. 45/Desa Bangkal an. Solehudin, dkk", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Sumenep", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 4, "Obyek Perkara": "HM No. 489/Kel. Tangkil an. Sigit Chanafi", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Blitar", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 5, "Obyek Perkara": "HM No. 171/Kel. Gunungkidul", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Nganjuk", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 6, "Obyek Perkara": "HP No. 29/Kel. Klatak an. Pemkab Banyuwangi", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Banyuwangi", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 7, "Obyek Perkara": "HM No. 4918, 4920/Kel Gading ", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kota Surabaya", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 8, "Obyek Perkara": "HM No. 19, 20, 21/Nglundo an. Wakiran", "Tahun Masuk": 2015, "Kantor Pertanahan": "-", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 9, "Obyek Perkara": "HM 281/Desa Grajagan an. Sugiyati", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Banyuwangi", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 10, "Obyek Perkara": "HM No. 647 dan Pecahannya HM No. 1168, 1169, 1170", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Kediri", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 11, "Obyek Perkara": "HM No. 405/Desa Bawang an. M. Muzaini Ramli", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kota Kediri", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 12, "Obyek Perkara": "HM No. 714 dan 715/Desa Tegalrejo an. Tukimin bin Setu", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Tulungagung", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 13, "Obyek Perkara": "HM No. 5/Kel Tubanan dan HGB No. 4937/Kel Pradah Kalikendal", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kota Surabaya", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 14, "Obyek Perkara": "HM No. 225/Desa Kendalrejo an. Samirah", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Trenggalek", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 15, "Obyek Perkara": "HM No. 917/Desa Puri an. Sumari", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Mojokerto", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 16, "Obyek Perkara": "HM No. 59/Desa Kunci an. Djoeri Djojodihardjo", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Bojonegoro", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 17, "Obyek Perkara": "HM No. 41/Desa Mojosari an. P. Haji Mahfoed", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Situbondo", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 18, "Obyek Perkara": "HM No. 84/Desa Kebundadap an. Kafrawi bin H. Fathor", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Sumenep", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 19, "Obyek Perkara": "HM No. 39/Desa Kepuharjo an. Mawarti Japri", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Malang", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 20, "Obyek Perkara": "HM No. 3620/Kel. Penganjuran an. Rachmat Supriadi", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Banyuwangi", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 21, "Obyek Perkara": "HM No. 92/Desa Kebonsikep an. Ny Tjendra Kasih Santoso", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Sidoarjo", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 22, "Obyek Perkara": "SK Kakantah Kab Jember dan HP No. 7/Desa Baletbaru", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Jember", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 23, "Obyek Perkara": "HM No. 164 dan 180/Desa Mojoroto", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Kediri", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 24, "Obyek Perkara": "HM No. 715/Kel Lontar", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kota Surabaya", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 25, "Obyek Perkara": "HM No. 2434/Desa Sidokumpul", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Gresik", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 26, "Obyek Perkara": "HM No. 2939/Kel. Penganjuran", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Banyuwangi", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 27, "Obyek Perkara": "HM No. 50/Kel Bungkaran", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kota Surabaya", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 28, "Obyek Perkara": "HM No. 207/Desa Malang", "Tahun Masuk": 2015, "Kantor Pertanahan": "Kabupaten Magetan", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 29, "Obyek Perkara": "HM…./Junrejo", "Tahun Masuk": 2016, "Kantor Pertanahan": "Kota Batu", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 30, "Obyek Perkara": "HM No. 81 dan 82/Desa Gembong", "Tahun Masuk": 2016, "Kantor Pertanahan": "Kabupaten Lamongan", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 31, "Obyek Perkara": "HM 125 dan 126/Desa Selokajang", "Tahun Masuk": 2016, "Kantor Pertanahan": "Kabupaten Blitar", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 32, "Obyek Perkara": "HM No. 318/Desa Banjarwati", "Tahun Masuk": 2016, "Kantor Pertanahan": "Kabupaten Lamongan", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 33, "Obyek Perkara": "HM No. 827/Desa Sedati Agung", "Tahun Masuk": 2016, "Kantor Pertanahan": "Kabupaten Sidoarjo", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 34, "Obyek Perkara": "HM No. 896/Kel Dukuh Kupang", "Tahun Masuk": 2017, "Kantor Pertanahan": "Kota Surabaya", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 35, "Obyek Perkara": "HM No. 125, 124, 35/Desa Tunggangri an. Musinah janda Haji Ngali", "Tahun Masuk": 2017, "Kantor Pertanahan": "Kabupaten Tulungagung", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 36, "Obyek Perkara": "HGB No. 2530/Kel Semolowaru an. Nanik Widjaya", "Tahun Masuk": 2017, "Kantor Pertanahan": "Kota Surabaya", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 37, "Obyek Perkara": "HM No. 28 dan 46/Desa Panglegur an. Karija Singgih", "Tahun Masuk": 2021, "Kantor Pertanahan": "Kabupaten Pamekasan", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 38, "Obyek Perkara": "HM 279/Kel Polowijen an. Machfud Samsuardi", "Tahun Masuk": 2021, "Kantor Pertanahan": "Kota Malang", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 39, "Obyek Perkara": "HM No. 246/Desa Temas an. H. Iswahyudi", "Tahun Masuk": 2021, "Kantor Pertanahan": "Kota Batu", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Luki", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 40, "Obyek Perkara": "HM No. 18 dan 19/Desa Ringinsari an. Sapiyah dan Pujowati", "Tahun Masuk": 2021, "Kantor Pertanahan": "Kabupaten Kediri", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Luki", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 41, "Obyek Perkara": "HM 1453/Kel. Bugullor an. Ny. Supiati", "Tahun Masuk": 2021, "Kantor Pertanahan": "Kabupaten Pasuruan", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Lela", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 42, "Obyek Perkara": "HM No. 121/Desa Klampok an. Setiyono", "Tahun Masuk": 2021, "Kantor Pertanahan": "Kabupaten Bojonegoro", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 43, "Obyek Perkara": "HM No. 214/Desa Buluh", "Tahun Masuk": 2021, "Kantor Pertanahan": "Kabupaten Bangkalan", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Luki", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 44, "Obyek Perkara": "HM No. 2525 dan 478/Desa Larangan Tokol", "Tahun Masuk": 2021, "Kantor Pertanahan": "Kabupaten Pamekasan", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 45, "Obyek Perkara": "HM No. 6704/Kel. Mangunharjoan. Andi Witjaksono", "Tahun Masuk": 2021, "Kantor Pertanahan": "Kota Probolinggo", "Dasar Tindak Lanjut": "Cacat Administrasi", "Pengolah": "Alif", "Progress Terkini": "SK", "Keterangan": "selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 46, "Obyek Perkara": "HM No. 1180/Desa Kepatihan an. Ny. Christine Kuncoro", "Tahun Masuk": 2021, "Kantor Pertanahan": "Kabupaten Jombang", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 47, "Obyek Perkara": "HM. No. 2924/Kel. Babatan an. Heru Sapto Widodo", "Tahun Masuk": 2021, "Kantor Pertanahan": "Kota Surabaya I", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Laila", "Progress Terkini": "SK", "Keterangan": "selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 48, "Obyek Perkara": "HM No. 1419, 3227, 1344, 1345, 1459, 1349, 1367, 3243, 3703, 3704, 3254/Desa Rogojampi", "Tahun Masuk": 2021, "Kantor Pertanahan": "Kabupaten Banyuwangi", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Laila", "Progress Terkini": "SK", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 49, "Obyek Perkara": "HM No. 933/Kel Tulusrejo an. Dharma Setiawan", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kota Malang", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 50, "Obyek Perkara": "HM No. 792/Kel Gading an. Haji Abdul Sjukur", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kota Surabaya II", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 51, "Obyek Perkara": "HM No. 428/Desa Ketawang an. Tarisah", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kabupaten Nganjuk", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 52, "Obyek Perkara": "HM No. 2010, 2011, 2012, 2013 dan 2014/Kel Petahunan an. Aris Soehandoko", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kota Pasuruan", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 53, "Obyek Perkara": "HM No. 928/Desa Brumbungan Lor an. Robani", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kabupaten Probolinggo", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 54, "Obyek Perkara": "HM No. 162/Desa Tumpang an. Ignatius Eric Nata", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kabupaten Malang", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 55, "Obyek Perkara": "HM No. 1591 dan 2272/Desa Karangwidoro", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kabupaten Malang", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Arif", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 56, "Obyek Perkara": "HM No. 1285 dan HM 1267/Desa Banaran Kulon", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kabupaten Nganjuk", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Lela", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 57, "Obyek Perkara": "HM No. 2192 dan 2197/Kel Lawangan Daya", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kabupaten Pamekasan", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 58, "Obyek Perkara": "HM No. 01081/Kel Triwung Kidul", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kota Probolinggo", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 59, "Obyek Perkara": "HM No. 00348/Desa Ngrengket", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kabupaten Nganjuk", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 60, "Obyek Perkara": "HM No. 641/Desa Gunggung", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kabupaten Sumenep", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Arif", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 61, "Obyek Perkara": "HM No. 178 dan 180/Kel Kebonagung", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kota Pasuruan", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 62, "Obyek Perkara": "HM No. 406/Desa Banyuurip", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kabupaten Gresik", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Arif", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 63, "Obyek Perkara": "HM No. 1368/Desa Bangah", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kabupaten Sidoarjo", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Arif", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 64, "Obyek Perkara": "HM No. 54/Kel. Bangkingan", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kota Surabaya I", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Lela", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 65, "Obyek Perkara": "HM No. 1877, 2688, 3057 dan 3065/Kel. Tlogomas", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kota Malang", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Arif", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 66, "Obyek Perkara": "HM No. 94, 95, 96 dan 98/Desa Tegalrejo", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kabupaten Probolinggo", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Lela", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 67, "Obyek Perkara": "HM No. 687/Kemuning Lor an. Mahfud Shiddiq", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kabupaten Jember", "Dasar Tindak Lanjut": "Cacat Administrasi", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 68, "Obyek Perkara": "HM No. 1007/Kel. Kadipaten an. Jenny Maria Magdalena C", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kabupaten Bojonegoro", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 69, "Obyek Perkara": "HM No. 04238, 04239, 04240/Desa Wringinputih", "Tahun Masuk": 2022, "Kantor Pertanahan": "Kabupaten Banyuwangi", "Dasar Tindak Lanjut": "Cacat Administrasi", "Pengolah": "Arif", "Progress Terkini": "SK", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 70, "Obyek Perkara": "HM No. 68/Desa Gadingmangu", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kabupaten Jombang", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Arif", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 71, "Obyek Perkara": "HM No. 3283 dan 3284/Kel Dinoyo", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kabupaten Malang", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 72, "Obyek Perkara": "HM No. 454/Kel Wiyung", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kota Surabaya I", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 73, "Obyek Perkara": "HM No. 80, dst…..../Desa Alas Tengah", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kabupaten Situbondo", "Dasar Tindak Lanjut": "Cacat Administrasi", "Pengolah": "Arif", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 74, "Obyek Perkara": "HM No. 732, 744, 746, 1097, 1098, 1119, 1120 dan 1121/Kel Polagan", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kabupaten Sampang", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Arif", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 75, "Obyek Perkara": "HM No. 819/Kel. Jember Kidul", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kabupaten Jember", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 76, "Obyek Perkara": "HM No. 1496 beserta pemisahannya HM No. 2010, 2011, 2012, 2013 dan 2014/Kel. Petahunan", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kota Pasuruan", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 77, "Obyek Perkara": "HM 372/Kel. Pagesangan", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kota Surabaya I", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 78, "Obyek Perkara": "HM No. 830/Kel. Bendogerit", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kota Blitar", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Lela", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 79, "Obyek Perkara": "HM No. 16/Kel. Tlumpu", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kota Blitar", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Alif", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 80, "Obyek Perkara": "HM No. 173/Desa Binor", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kabupaten Probolinggo", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Lela", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 81, "Obyek Perkara": "HM No. 130, 131 dan 132/Desa Kejayan", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kabupaten Pasuruan", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 82, "Obyek Perkara": "HM No. 166 dan 167/Desa Gladag", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kabupaten Banyuwangi", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 83, "Obyek Perkara": "HGB No. 872 dan 876/Kel. Mangunharjo", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kota Probolinggo", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Alif", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 84, "Obyek Perkara": "HM No. 00622/Desa Widang", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kabupaten Tuban", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 85, "Obyek Perkara": "HM No. 932/Desa Tropodo", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kabupaten Sidoarjo", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Arif", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 86, "Obyek Perkara": "HM No. 598/Desa Damarsi", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kabupaten Sidoarjo", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Arif", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 87, "Obyek Perkara": "HM No. 1645/Kel. Meri", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kota Mojokerto", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Lela", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 88, "Obyek Perkara": "HM No. 14532/Kel. Kedundung", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kota Mojokerto", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "Selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 89, "Obyek Perkara": "HM No. 4941/Kel. Kranggan an. H. Fatchan Rofi'i", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kota Mojokerto", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 90, "Obyek Perkara": "HGB No. 396/Kel. Sawahan", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kota Surabaya I", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 91, "Obyek Perkara": "HM No. 246/Desa Baleturi an. Mia Pertiwi", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kabupaten Nganjuk", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Laila", "Progress Terkini": "SK", "Keterangan": "selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 92, "Obyek Perkara": "HM No. 940/Desa Sidodadi an. Samiati", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kabupaten Malang", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Laila", "Progress Terkini": "-", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 93, "Obyek Perkara": "HM No. 547/Desa Berbek an. Linda Yuliana", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kabupaten Nganjuk", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Laila", "Progress Terkini": "-", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 94, "Obyek Perkara": "HM No. 1429/Desa Peleyan an. Samana", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kabupaten Situbondo", "Dasar Tindak Lanjut": "Cacat Administrasi", "Pengolah": "Arif", "Progress Terkini": "SK", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 95, "Obyek Perkara": "HM No. 24/Desa Tempeh Kidul", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kabupaten Lumajang", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Laila", "Progress Terkini": "SK", "Keterangan": "selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 96, "Obyek Perkara": "HM No. 1537/Kelurahan Tompokersan", "Tahun Masuk": 2023, "Kantor Pertanahan": "Kabupaten Lumajang", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Alif", "Progress Terkini": "SK", "Keterangan": "proses", "Status": "Proses", "Nomor SK": "-"}, {"No": 97, "Obyek Perkara": "HM No. 32/Desa Samatan an. Piyah Buk Djuhari", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Pamekasan", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Alif", "Progress Terkini": "SK", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 98, "Obyek Perkara": "HM No. 21/Desa Bandarkedungmulyo an. H. Syadily A.R.", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Jombang", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Alif", "Progress Terkini": "SK", "Keterangan": "selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 99, "Obyek Perkara": "HM No. 1434/Desa Bolo an. Suyatno", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Gresik", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Alif", "Progress Terkini": "-", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 100, "Obyek Perkara": "HM No. 1692 dan 1926/Kel. Kalisari", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kota Surabaya II", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Alif", "Progress Terkini": "SK", "Keterangan": "selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 101, "Obyek Perkara": "HM No. 1468/Kel. Klatak an. Edi Setiyawan", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Banyuwangi", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 102, "Obyek Perkara": "HM No. 206/Desa Alassumur Kulon an. Hj. Siti Rohmah", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Probolinggo", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 103, "Obyek Perkara": "HM No. 284/Kel. Pucang an. Ridwan Tantomo", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Sidoarjo", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 104, "Obyek Perkara": "HM No. 118/Desa Semampir an. Ngatinem Binti Kerto", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Sidoarjo", "Dasar Tindak Lanjut": "Cacat Administrasi", "Pengolah": "Suci", "Progress Terkini": "-", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 105, "Obyek Perkara": "HM No. 725/Desa Paowan an. Zainul Hasan", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Situbondo", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 106, "Obyek Perkara": "HM No. 317/Desa Kebun an. Siti Aminah", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Bangkalan", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "-", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 107, "Obyek Perkara": "HM No. 1322/Desa Gadingrejo an. Anis Satul Ulumiya", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Jember", "Dasar Tindak Lanjut": "Cacat Administrasi", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 108, "Obyek Perkara": "HM No. 115/Kel. Tamanbaru an. Poltak Situmorang", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Banyuwangi", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 109, "Obyek Perkara": "HM No. 15, 21, 53, 54, 22, 56, 55, 99/Desa Simo", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Tuban", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 110, "Obyek Perkara": "HM No. 1426/Desa Banyudono an. Welly Handoko", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Ponorogo", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Laila", "Progress Terkini": "SK", "Keterangan": "selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 111, "Obyek Perkara": "HM No. 58/Desa Pakamban Laok an. Maddirah P. Abd. Rasyid", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Sumenep", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Laila", "Progress Terkini": "SK", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 112, "Obyek Perkara": "HM No. 2139/Kel. Singonegaran an. Endang Murtiningrum", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kota Kediri", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Laila", "Progress Terkini": "-", "Keterangan": "proses", "Status": "Proses", "Nomor SK": "-"}, {"No": 113, "Obyek Perkara": "HM No. 820, 821, 822, 823, 824 dan 825/Desa Dempel", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Ngawi", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Laila", "Progress Terkini": "SK", "Keterangan": "proses", "Status": "Proses", "Nomor SK": "-"}, {"No": 114, "Obyek Perkara": "HM No. 353, 354, 757/Desa Kasreman", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Ngawi", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Alif", "Progress Terkini": "SK", "Keterangan": "selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 115, "Obyek Perkara": "HM No. 15, 21, 00053, 00054, 22, 00056, 99/Desa Simo", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Tuban", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 116, "Obyek Perkara": "HM No. 495/Desa Laban, Kec. Menganti", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Gresik", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "-", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "01/Pbt/BPN.35/I/2024"}, {"No": 117, "Obyek Perkara": "HM. No. 525/Desa Giliketapang, Kec Sumberasih", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Probolinggo", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Alif", "Progress Terkini": "-", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "02/Pbt/BPN.35/I/2024"}, {"No": 118, "Obyek Perkara": "HM No. 368 dan 371/Kel. Jingglong, Kec Sutojayan", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Blitar", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Alif", "Progress Terkini": "-", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "03/Pbt/BPN.35/I/2024"}, {"No": 119, "Obyek Perkara": "HM No. 645, 646m 647/Desa Nglinggo, Kec Gondang", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Nganjuk", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Arif", "Progress Terkini": "-", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "04/Pbt/BPN.35/II/2024"}, {"No": 120, "Obyek Perkara": "HM No. 1683/Desa Sumberanyar, Kec Paiton", "Tahun Masuk": 2024, "Kantor Pertanahan": "Kabupaten Probolinggo", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Alif", "Progress Terkini": "-", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "05/Pbt/BPN.35/II/2024"}, {"No": 121, "Obyek Perkara": "HM No. 1/Desa Gondanglegi Kulon, HGB No. 16, 23 s/d 48/Desa Gondanglegi Wetan", "Tahun Masuk": 2025, "Kantor Pertanahan": "Kabupaten Malang", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "-", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 122, "Obyek Perkara": "062/2005 (HT I) dan Nomor 324/2005 (HT II), Nomor 081/2005 (HT I) dan Nomor 14/2006 (HT II), Nomor 16/2006, Nomor 15/2006, 3158/Kelurahan Sisir, Nomor 3590 dan 1180/Desa Tulungrejo ", "Tahun Masuk": 2025, "Kantor Pertanahan": "Kota Batu", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 123, "Obyek Perkara": "HM No. 427/Desa Kalianget Timur an. Susmiati", "Tahun Masuk": 2025, "Kantor Pertanahan": "Kabupaten Sumenep", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Laila", "Progress Terkini": "-", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 124, "Obyek Perkara": "HM No. 2614, 2615 dan 2616/Desa Katikan", "Tahun Masuk": 2025, "Kantor Pertanahan": "Kabupaten Ngawi", "Dasar Tindak Lanjut": "Cacat Administrasi", "Pengolah": "Laila", "Progress Terkini": "SK", "Keterangan": "selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 125, "Obyek Perkara": "HM No. 132/Desa Gedungan, Kec Batuan", "Tahun Masuk": 2025, "Kantor Pertanahan": "Kabupaten Sumenep", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suci", "Progress Terkini": "SK", "Keterangan": "proses", "Status": "Proses", "Nomor SK": "-"}, {"No": 126, "Obyek Perkara": "HM No. 248, 261 Desa Sumbercangkring, Kec Gurah", "Tahun Masuk": 2026, "Kantor Pertanahan": "Kabupaten Kediri", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suko", "Progress Terkini": "Pemberitahuan", "Keterangan": "proses", "Status": "Proses", "Nomor SK": "-"}, {"No": 127, "Obyek Perkara": "HM No. 1434/Desa Bolo an. Suyatno", "Tahun Masuk": 2026, "Kantor Pertanahan": "Kabupaten Gresik", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Alif", "Progress Terkini": "SK", "Keterangan": "Minta Tahapan Ulang", "Status": "Lainnya", "Nomor SK": "-"}, {"No": 128, "Obyek Perkara": "HM No. 828/Desa Kemiri", "Tahun Masuk": 2026, "Kantor Pertanahan": "-", "Dasar Tindak Lanjut": "-", "Pengolah": "-", "Progress Terkini": "-", "Keterangan": "-", "Status": "Belum Ada Keterangan", "Nomor SK": "-"}, {"No": 129, "Obyek Perkara": "HM No. 814/Kelurahan Balowerit, Kec Kediri", "Tahun Masuk": 2026, "Kantor Pertanahan": "Kota Kediri", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suko", "Progress Terkini": "-", "Keterangan": "proses", "Status": "Proses", "Nomor SK": "-"}, {"No": 130, "Obyek Perkara": "HM No. 2672/Sumberarum, Kec Ngraho", "Tahun Masuk": 2026, "Kantor Pertanahan": "Kabupaten Bojonegoro", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suko", "Progress Terkini": "-", "Keterangan": "proses", "Status": "Proses", "Nomor SK": "-"}, {"No": 131, "Obyek Perkara": "HM No. 1390/Kepolorejo, Kec Magetan", "Tahun Masuk": 2026, "Kantor Pertanahan": "Kabupaten Magetan", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suko", "Progress Terkini": "-", "Keterangan": "proses", "Status": "Proses", "Nomor SK": "-"}, {"No": 132, "Obyek Perkara": "HM No. 227/ Waru Barat", "Tahun Masuk": 2026, "Kantor Pertanahan": "Kabupaten Pamekasan", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Dian", "Progress Terkini": "GelarAwal", "Keterangan": "Surat Pengembalian Berkas", "Status": "Lainnya", "Nomor SK": "-"}, {"No": 133, "Obyek Perkara": "HM No. 1553 dan 1677/Kelurahan Oro-oro Dowo", "Tahun Masuk": 2026, "Kantor Pertanahan": "Kabupaten Malang", "Dasar Tindak Lanjut": "Cacat Administrasi", "Pengolah": "Suko", "Progress Terkini": "SK", "Keterangan": "selesai", "Status": "Selesai", "Nomor SK": "05/Pbt/BPN.35/VII/2026"}, {"No": 134, "Obyek Perkara": "HM No. 17/Desa Buddan, Kec. Tanah Merah", "Tahun Masuk": 2026, "Kantor Pertanahan": "Kabupaten Bangkalan", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Suko", "Progress Terkini": "KelengkapanBerkas", "Keterangan": "proses", "Status": "Proses", "Nomor SK": "-"}, {"No": 135, "Obyek Perkara": "HM No. 902 dan 1049/Kel. Lontar", "Tahun Masuk": 2026, "Kantor Pertanahan": "Kota Surabaya I", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Dian", "Progress Terkini": "SK", "Keterangan": "selesai", "Status": "Selesai", "Nomor SK": "-"}, {"No": 136, "Obyek Perkara": "HM No. 72 dan 73/Desa Singotrunan", "Tahun Masuk": 2026, "Kantor Pertanahan": "Kabupaten Banyuwangi", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Dian", "Progress Terkini": "RPD", "Keterangan": "proses (Surat Petunjuk)", "Status": "Proses", "Nomor SK": "-"}, {"No": 137, "Obyek Perkara": "HM No. 1873/Desa Banarankulon", "Tahun Masuk": 2026, "Kantor Pertanahan": "Kabupaten Nganjuk", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Dian", "Progress Terkini": "SK", "Keterangan": "proses", "Status": "Proses", "Nomor SK": "-"}, {"No": 138, "Obyek Perkara": "HM No. 865/Desa Tanjungglugur", "Tahun Masuk": 2026, "Kantor Pertanahan": "Kabupaten Situbondo", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Dian", "Progress Terkini": "SK", "Keterangan": "proses", "Status": "Proses", "Nomor SK": "-"}, {"No": 139, "Obyek Perkara": "HM No. 55/Desa Kedungrojo", "Tahun Masuk": 2026, "Kantor Pertanahan": "Kabupaten Tuban", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Dian", "Progress Terkini": "SK", "Keterangan": "proses", "Status": "Proses", "Nomor SK": "-"}, {"No": 140, "Obyek Perkara": "HM No. 1606, 1612, 1613 dan 1614/Oro-Oro Dowo", "Tahun Masuk": 2026, "Kantor Pertanahan": "Kota Malang", "Dasar Tindak Lanjut": "Putusan Pengadilan", "Pengolah": "Dian", "Progress Terkini": "KelengkapanBerkas", "Keterangan": "proses", "Status": "Proses", "Nomor SK": "-"}];
+
+const STATUS_ORDER = ['Selesai','Proses','Belum Ada Keterangan','Lainnya'];
+const STATUS_COLOR = {
+  'Selesai':'#2F6844',
+  'Proses':'#B7791F',
+  'Belum Ada Keterangan':'#5B6472',
+  'Lainnya':'#A23B3B'
+};
+const STATUS_CLASS = s => s.replace(/ /g,'-');
+
+// ---------- derived aggregates ----------
+const total = DATA.length;
+const byStatus = {};
+STATUS_ORDER.forEach(s=>byStatus[s]=0);
+DATA.forEach(d=>{ byStatus[d.Status] = (byStatus[d.Status]||0) + 1; });
+
+const years = [...new Set(DATA.map(d=>d['Tahun Masuk']))].sort();
+const byYear = {};
+years.forEach(y=>{ byYear[y] = {Selesai:0, Proses:0, Lainnya:0}; });
+DATA.forEach(d=>{
+  const y = d['Tahun Masuk'];
+  const s = d.Status === 'Belum Ada Keterangan' ? 'Lainnya' : (STATUS_ORDER.includes(d.Status) ? d.Status : 'Lainnya');
+  if(s==='Selesai') byYear[y].Selesai++;
+  else if(s==='Proses') byYear[y].Proses++;
+  else byYear[y].Lainnya++;
+});
+
+const kantorCount = {};
+DATA.forEach(d=>{
+  const k = d['Kantor Pertanahan'];
+  if(k && k !== '-') kantorCount[k] = (kantorCount[k]||0) + 1;
+});
+const topKantor = Object.entries(kantorCount).sort((a,b)=>b[1]-a[1]).slice(0,10);
+
+const pengolahCount = {};
+DATA.forEach(d=>{
+  const p = d['Pengolah'];
+  if(p && p !== '-') pengolahCount[p] = (pengolahCount[p]||0) + 1;
+});
+const topPengolah = Object.entries(pengolahCount).sort((a,b)=>b[1]-a[1]);
+
+// ---------- header meta ----------
+document.getElementById('meta-total').textContent = total + ' berkas';
+document.getElementById('meta-years').textContent = years[0] + '–' + years[years.length-1];
+const pctSelesai = Math.round((byStatus['Selesai']/total)*100);
+document.getElementById('stamp-pct').textContent = pctSelesai + '%';
+
+// ---------- stat strip ----------
+const statMeta = [
+  {key:'ALL', label:'Total Berkas', cls:'', val: total},
+  {key:'Selesai', label:'Selesai', cls:'selesai', val: byStatus['Selesai']},
+  {key:'Proses', label:'Proses', cls:'proses', val: byStatus['Proses']},
+  {key:'Belum Ada Keterangan', label:'Belum Ada Keterangan', cls:'belum', val: byStatus['Belum Ada Keterangan']},
+];
+document.getElementById('stat-strip').innerHTML = statMeta.map(s=>`
+  <div class="stat ${s.cls}">
+    <div class="num">${s.val}</div>
+    <div class="cap">${s.label}</div>
+  </div>`).join('');
+
+// ---------- charts ----------
+Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
+Chart.defaults.color = '#3C4C64';
+
+new Chart(document.getElementById('chartStatus'), {
+  type:'doughnut',
+  data:{
+    labels: STATUS_ORDER,
+    datasets:[{
+      data: STATUS_ORDER.map(s=>byStatus[s]),
+      backgroundColor: STATUS_ORDER.map(s=>STATUS_COLOR[s]),
+      borderColor:'#FCFAF4',
+      borderWidth:2
+    }]
+  },
+  options:{
+    maintainAspectRatio:false,
+    cutout:'62%',
+    plugins:{ legend:{ position:'bottom', labels:{ boxWidth:11, font:{size:11} } } }
+  }
+});
+
+new Chart(document.getElementById('chartTahun'), {
+  type:'bar',
+  data:{
+    labels: years,
+    datasets:[
+      {label:'Selesai', data: years.map(y=>byYear[y].Selesai), backgroundColor: STATUS_COLOR['Selesai']},
+      {label:'Proses', data: years.map(y=>byYear[y].Proses), backgroundColor: STATUS_COLOR['Proses']},
+      {label:'Lainnya', data: years.map(y=>byYear[y].Lainnya), backgroundColor: STATUS_COLOR['Belum Ada Keterangan']},
+    ]
+  },
+  options:{
+    maintainAspectRatio:false,
+    scales:{ x:{ stacked:true, grid:{display:false} }, y:{ stacked:true, grid:{color:'#EEE6D2'}, beginAtZero:true, ticks:{precision:0} } },
+    plugins:{ legend:{ position:'bottom', labels:{ boxWidth:11, font:{size:11} } } }
+  }
+});
+
+new Chart(document.getElementById('chartKantor'), {
+  type:'bar',
+  data:{
+    labels: topKantor.map(d=>d[0]),
+    datasets:[{ data: topKantor.map(d=>d[1]), backgroundColor:'#A9822E' }]
+  },
+  options:{
+    indexAxis:'y',
+    maintainAspectRatio:false,
+    scales:{ x:{ grid:{color:'#EEE6D2'}, beginAtZero:true, ticks:{precision:0} }, y:{ grid:{display:false} } },
+    plugins:{ legend:{ display:false } }
+  }
+});
+
+new Chart(document.getElementById('chartPengolah'), {
+  type:'bar',
+  data:{
+    labels: topPengolah.map(d=>d[0]),
+    datasets:[{ data: topPengolah.map(d=>d[1]), backgroundColor:'#16233A' }]
+  },
+  options:{
+    indexAxis:'y',
+    maintainAspectRatio:false,
+    scales:{ x:{ grid:{color:'#EEE6D2'}, beginAtZero:true, ticks:{precision:0} }, y:{ grid:{display:false} } },
+    plugins:{ legend:{ display:false } }
+  }
+});
+
+// ---------- table ----------
+const yearFilter = document.getElementById('yearFilter');
+years.forEach(y=>{
+  const opt = document.createElement('option');
+  opt.value = y; opt.textContent = y;
+  yearFilter.appendChild(opt);
+});
+
+const pillsEl = document.getElementById('statusPills');
+const pillDefs = [{key:'', label:'Semua Status'}].concat(STATUS_ORDER.map(s=>({key:s,label:s})));
+let activeStatus = '';
+pillsEl.innerHTML = pillDefs.map(p=>`<div class="pill ${p.key===''?'active':''}" data-key="${p.key}">${p.label}</div>`).join('');
+
+let openRow = null;
+let searchTerm = '';
+let activeYear = '';
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function render(){
+  const body = document.getElementById('tableBody');
+  const term = searchTerm.toLowerCase();
+  const filtered = DATA.filter(d=>{
+    if(activeStatus && d.Status !== activeStatus) return false;
+    if(activeYear && String(d['Tahun Masuk']) !== String(activeYear)) return false;
+    if(term){
+      const hay = (d['Obyek Perkara']+' '+d['Kantor Pertanahan']+' '+d['Pengolah']).toLowerCase();
+      if(!hay.includes(term)) return false;
+    }
+    return true;
+  });
+
+  document.getElementById('resultCount').textContent = filtered.length;
+  document.getElementById('totalCount').textContent = total;
+  document.getElementById('emptyState').style.display = filtered.length ? 'none' : 'block';
+
+  body.innerHTML = filtered.map((d,i)=>{
+    const cls = STATUS_CLASS(d.Status);
+    return `
+    <tr data-idx="${d.No}">
+      <td class="no">${String(d.No).padStart(3,'0')}</td>
+      <td class="obyek">${escapeHtml(d['Obyek Perkara'])}</td>
+      <td class="tahun">${d['Tahun Masuk']}</td>
+      <td>${escapeHtml(d['Kantor Pertanahan'])}</td>
+      <td>${escapeHtml(d['Pengolah'])}</td>
+      <td><span class="badge ${cls}">${d.Status}</span></td>
+    </tr>
+    <tr class="detail-row" data-detail="${d.No}" style="display:none;">
+      <td colspan="6">
+        <div class="detail-grid">
+          <div><div class="k">Dasar Tindak Lanjut</div><div class="v">${escapeHtml(d['Dasar Tindak Lanjut'])}</div></div>
+          <div><div class="k">Progress Terkini</div><div class="v">${escapeHtml(d['Progress Terkini'])}</div></div>
+          <div><div class="k">Keterangan</div><div class="v">${escapeHtml(d['Keterangan'])}</div></div>
+          <div><div class="k">Nomor SK</div><div class="v">${escapeHtml(d['Nomor SK'])}</div></div>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  body.querySelectorAll('tr[data-idx]').forEach(tr=>{
+    tr.addEventListener('click', ()=>{
+      const idx = tr.getAttribute('data-idx');
+      const detail = body.querySelector(`tr[data-detail="${idx}"]`);
+      const isOpen = tr.classList.contains('open');
+      body.querySelectorAll('tr.open').forEach(r=>r.classList.remove('open'));
+      body.querySelectorAll('tr.detail-row').forEach(r=>r.style.display='none');
+      if(!isOpen){
+        tr.classList.add('open');
+        detail.style.display = 'table-row';
+      }
+    });
+  });
+}
+
+document.getElementById('searchInput').addEventListener('input', e=>{
+  searchTerm = e.target.value; render();
+});
+yearFilter.addEventListener('change', e=>{
+  activeYear = e.target.value; render();
+});
+pillsEl.addEventListener('click', e=>{
+  const pill = e.target.closest('.pill');
+  if(!pill) return;
+  pillsEl.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  pill.classList.add('active');
+  activeStatus = pill.getAttribute('data-key');
+  render();
+});
+
+render();
+</script>
+
+</body>
+</html>
