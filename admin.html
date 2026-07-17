@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Admin Upload Data</title>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+body{
+    font-family:Arial;
+    background:#f4f4f4;
+    padding:40px;
+}
+
+.card{
+    max-width:600px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,.1);
+}
+
+button{
+    padding:12px 25px;
+    background:#0066cc;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#004c99;
+}
+
+#status{
+    margin-top:20px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Upload Excel Dashboard</h2>
+
+<input type="file" id="excel">
+
+<br><br>
+
+<button onclick="uploadExcel()">
+Upload
+</button>
+
+<div id="status"></div>
+
+</div>
+
+<script>
+
+const supabaseUrl='https://uvxfkdhdsbctkjuyxpkb.supabase.co';
+
+const supabaseKey='sb_publishable_x1JM3n4fpD17rKSEyTe1jw_pvoKMrP9';
+
+const supabase=window.supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+async function uploadExcel(){
+
+const file=document.getElementById("excel").files[0];
+
+if(!file){
+
+alert("Pilih file Excel");
+
+return;
+
+}
+
+document.getElementById("status").innerHTML="Membaca Excel...";
+
+const buffer=await file.arrayBuffer();
+
+const workbook=XLSX.read(buffer);
+
+const sheet=workbook.Sheets[workbook.SheetNames[0]];
+
+const data=XLSX.utils.sheet_to_json(sheet);
+
+console.log(data);
+
+document.getElementById("status").innerHTML=
+"Excel berhasil dibaca ("+data.length+" baris).";
+
+}
+
+</script>
+
+</body>
+</html>
